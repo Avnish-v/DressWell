@@ -8,7 +8,7 @@ const productModel = require("../models/ShopingModel");
 let result = false;
 const storageMulter = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./uploads");
+        cb(null, "../frontend/public/uploads");
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
@@ -34,7 +34,7 @@ app.post("/backend/store", upload.single('file'), async (req, res) => {
             description: req.body.description
         });
         result = true;
-        res.json({ User, result })
+        res.json({ "data": User, result })
 
     } catch (error) {
         result = false;
@@ -48,7 +48,7 @@ app.get("/men", async (req, res) => {
     try {
         result = true;
         const user = await productModel.find({ gender: "male" })
-        res.status(201).json({ user, result })
+        res.status(201).json({ "data": user, result })
     } catch (error) {
         result = false
         res.json({ error, result })
@@ -59,23 +59,36 @@ app.get("/women", async (req, res) => {
     try {
         result = true;
         const user = await productModel.find({ gender: "female" })
-        res.status(201).json({ user, result })
+        res.status(201).json({ "data": user, result })
     } catch (error) {
         result = false
         res.json({ error, result })
     }
 })
-//! kids 
+//! kids
 app.get("/kids", async (req, res) => {
     try {
         result = true;
         const user = await productModel.find({ gender: "kids" })
-        res.status(201).json({ user, result })
+        res.status(201).json({ "data": user, result })
+
     } catch (error) {
         result = false
         res.json({ error, result })
     }
 })
+//!unisex
+app.get("/unisex", async (req, res) => {
+    try {
+        result = true;
+        const user = await productModel.find({ gender: "unisex" })
+        res.status(201).json({ "data": user, result })
+    } catch (error) {
+        result = false
+        res.json({ error, result })
+    }
+})
+
 //! in terms of items all to fetch
 app.get("/items", async (req, res) => {
     try {
@@ -91,7 +104,7 @@ app.get("/items", async (req, res) => {
 app.get("/jeans", async (req, res) => {
     try {
         const user = await productModel.find({ type: "jeans" });
-        res.status(201).json({ user });
+        res.status(201).json({ "data": user });
     } catch (error) {
         res.json({ error, result });
     }
@@ -101,44 +114,60 @@ app.get("/shirt", async (req, res) => {
     try {
 
         const user = await productModel.find({ type: "shirt" });
-        res.status(201).json({ user });
+        res.status(201).json({ "data": user });
+    } catch (error) {
+        res.json({ result, error });
+    }
+
+})
+app.get("/T-shirt", async (req, res) => {
+    try {
+
+        const user = await productModel.find({ type: "T-shirt" });
+        res.status(201).json({ "data": user });
     } catch (error) {
         res.json({ result, error });
     }
 
 })
 //! shoe
-app.get("/shoe", async (req, res) => {
+app.get("/footwear", async (req, res) => {
     try {
-
-        const user = await productModel.find({ type: "soe" });
-        res.status(201).json({ user });
+        const user = await productModel.find({ type: "footwear" });
+        res.status(201).json({ "data": user });
     } catch (error) {
         res.json({ result, error });
     }
-
 })
 //! dress
 app.get("/dress", async (req, res) => {
     try {
-
         const user = await productModel.find({ type: "dress" });
         if (user.gender === "female") {
-            res.status(201).json({ user });
+            res.status(201).json({ "data": user });
         }
     } catch (error) {
         res.json({ result, error });
     }
-
 })
 //!bag 
 app.get("/bags", async (req, res) => {
     try {
         const user = await productModel.find({ type: "bag" });
-        res.status(201).json({ user });
+        res.status(201).json({ "data": user });
+    } catch (error) {
+        res.json({ result, error });
+    }
+})
+app.get("/accessories", async (req, res) => {
+    try {
+        const user = await productModel.find({ type: "accessories" });
+        res.status(201).json({ "data": user });
     } catch (error) {
         res.json({ result, error });
     }
 })
 //! 
+
+
 module.exports = app;
